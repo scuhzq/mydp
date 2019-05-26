@@ -14,6 +14,13 @@ public class MaxSumSubArray {
         for(int i = result[1]; i <= result[2]; i++){
             System.out.print(array[i] + " ");
         }
+        System.out.println();
+
+        result = dpMaxSubArray(array);
+        System.out.println("dpMaxSum:" + result[0]);
+        for(int i = result[1]; i <= result[2]; i++){
+            System.out.print(array[i] + " ");
+        }
     }
 
     /**
@@ -25,7 +32,6 @@ public class MaxSumSubArray {
         int maxSum = A[0];
         int tempSum = A[0];
 
-        result[0] = A[0];
         int start = 0;
         int end = 0;
 
@@ -39,6 +45,40 @@ public class MaxSumSubArray {
 
             if(maxSum < tempSum){
                 maxSum = tempSum;
+                end = i;
+            }
+        }
+
+        result[0] = maxSum;
+        result[1] = start;
+        result[2] = end;
+        return result;
+    }
+
+    /**
+     * 动态规划
+     */
+    public static int[] dpMaxSubArray(int[] A) {
+        int length = A.length;
+        int[] dp = new int[length];//dp[i]代表以i结尾的最大子数组之和
+
+        int[] result = new int[3];
+        int maxSum = A[0];
+
+        result[0] = A[0];
+        int start = 0;
+        int end = 0;
+
+        for (int i = 1; i < length; i++){
+            if(dp[i-1] > 0){
+                dp[i] = dp[i-1] + A[i];
+            } else {
+                dp[i] = A[i];
+                start = i;
+            }
+
+            if(maxSum < dp[i]){
+                maxSum = dp[i];
                 end = i;
             }
         }
